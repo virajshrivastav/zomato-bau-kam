@@ -18,7 +18,9 @@ export const MetricItem = ({ label, value, showPill, pillType }: MetricItemProps
 
   return (
     <div className="flex items-center justify-between py-3 hover:bg-muted/50 px-3 rounded-lg transition-all duration-200 hover:scale-[1.02] group">
-      <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{label}</span>
+      <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+        {label}
+      </span>
       {showPill ? (
         <StatusPill type={getStatusType(value)}>{value}</StatusPill>
       ) : (

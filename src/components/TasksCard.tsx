@@ -23,9 +23,7 @@ export const TasksCard = ({ tasks: initialTasks }: TasksCardProps) => {
       prev.map((task) => {
         if (task.id === taskId) {
           const newStatus = task.status === "done" ? "pending" : "done";
-          toast.success(
-            `Task marked as ${newStatus === "done" ? "completed" : "pending"}`
-          );
+          toast.success(`Task marked as ${newStatus === "done" ? "completed" : "pending"}`);
           return { ...task, status: newStatus };
         }
         return task;

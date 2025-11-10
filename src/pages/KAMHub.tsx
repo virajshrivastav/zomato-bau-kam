@@ -1,30 +1,79 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "@/components/SearchBar";
 import { StatusPill } from "@/components/StatusPill";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, TrendingUp, TrendingDown, Store, Target, BarChart3, Home } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRestaurants } from "@/hooks/useRestaurants";
+import { ChevronRight, Store, Home, Loader2 } from "lucide-react";
 
-const restaurants = [
-  { id: 1, name: "Viraj Restaurant", status: "poor" as const, revenue: "₹12K", orders: 45, trend: "down" },
-  { id: 2, name: "Snehil Restaurant", status: "good" as const, revenue: "₹28K", orders: 128, trend: "up" },
-  { id: 3, name: "Rakesh Restaurant", status: "best" as const, revenue: "₹45K", orders: 210, trend: "up" },
-  { id: 4, name: "Priya's Kitchen", status: "good" as const, revenue: "₹32K", orders: 156, trend: "up" },
-  { id: 5, name: "Mumbai Spice", status: "pending" as const, revenue: "₹8K", orders: 32, trend: "down" },
-  { id: 6, name: "Tandoor Express", status: "good" as const, revenue: "₹22K", orders: 98, trend: "up" },
-  { id: 7, name: "South Flavors", status: "approached" as const, revenue: "₹5K", orders: 18, trend: "up" },
-];
+// Helper function to determine status based on restaurant data
+const getRestaurantStatus = (
+  restaurant: any
+): "best" | "good" | "poor" | "pending" | "approached" => {
+  if (!restaurant.drive_data || restaurant.drive_data.length === 0) return "pending";
 
-const driveMetrics = [
-  { id: 1, label: "NCN", value: "25%", subtitle: "New Customer to New", change: "+3.2%", isPositive: true },
-  { id: 2, label: "N2R", value: "18%", subtitle: "New to Regular", change: "+1.8%", isPositive: true },
-  { id: 3, label: "MRP", value: "₹45K", subtitle: "Monthly Revenue per Rest.", change: "-2.1%", isPositive: false },
-  { id: 4, label: "Active", value: "127", subtitle: "Active Restaurants", change: "+12", isPositive: true },
-];
+  const hasConverted = restaurant.drive_data.some((dd: any) => dd.converted_stepper);
+  const hasApproached = restaurant.drive_data.some((dd: any) => dd.approached);
+
+  if (hasConverted) return "best";
+  if (hasApproached) return "approached";
+
+  // Based on revenue (sept_ov)
+  if (restaurant.sept_ov && restaurant.sept_ov > 60000) return "good";
+  if (restaurant.sept_ov && restaurant.sept_ov > 40000) return "good";
+
+  return "pending";
+};
 
 const KAMHub = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { data: restaurants, isLoading, error } = useRestaurants();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter restaurants based on search
+  const filteredRestaurants =
+    restaurants?.filter(
+      (restaurant) =>
+        restaurant.res_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.locality?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.cuisine?.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
+
+  // Get user initials
+  const getUserInitials = (email: string | undefined) => {
+    if (!email) return "KAM";
+    const parts = email.split("@")[0].split(".");
+    return parts
+      .map((p) => p[0].toUpperCase())
+      .join("")
+      .slice(0, 2);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading your restaurants...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <p className="text-destructive mb-4">Error loading restaurants</p>
+          <Button onClick={() => window.location.reload()}>Retry</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,142 +91,99 @@ const KAMHub = () => {
                 <Home className="h-5 w-5" />
               </Button>
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold">
-                SU
+                {getUserInitials(user?.email)}
               </div>
               <div>
-                <p className="text-sm font-medium">Shiv Udesi</p>
-                <p className="text-xs text-muted-foreground">shiv.udesi@zomato.com</p>
+                <p className="text-sm font-medium">{restaurants?.[0]?.kam_name || "KAM"}</p>
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
             </div>
-            <SearchBar className="flex-1 max-w-xl" />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/zonal-head-view")}
-              className="hidden md:flex"
-            >
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Zonal View
-            </Button>
+            <SearchBar
+              className="flex-1 max-w-xl"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-[1fr_400px] gap-6">
-          {/* Left Column - Restaurant View */}
+        <div className="max-w-5xl mx-auto">
+          {/* Restaurant View */}
           <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-bold">Restaurant Portfolio</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {restaurants.length} restaurants under management
+                <h2 className="text-3xl font-bold text-foreground">Restaurant Portfolio</h2>
+                <p className="text-base text-muted-foreground mt-2">
+                  {filteredRestaurants.length} restaurant
+                  {filteredRestaurants.length !== 1 ? "s" : ""}{" "}
+                  {searchQuery && `(filtered from ${restaurants?.length})`}
                 </p>
               </div>
-              <Badge variant="outline" className="gap-1">
-                <Store className="h-3 w-3" />
-                {restaurants.length} Total
+              <Badge variant="outline" className="gap-2 px-4 py-2 text-sm">
+                <Store className="h-4 w-4" />
+                {filteredRestaurants.length} Total
               </Badge>
             </div>
-            <div className="space-y-3">
-              {restaurants.map((restaurant, index) => (
-                <Card
-                  key={restaurant.id}
-                  className="group p-5 hover:shadow-lg transition-all duration-300 cursor-pointer border-l-4 border-l-transparent hover:border-l-primary animate-slide-up"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                  onClick={() => navigate(`/restaurant/${restaurant.id}`)}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center gap-3">
-                        <span className="text-lg font-semibold">
-                          {restaurant.name}
-                        </span>
-                        <StatusPill status={restaurant.status} />
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Target className="h-3.5 w-3.5" />
-                          <span>{restaurant.orders} orders</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          {restaurant.trend === "up" ? (
-                            <TrendingUp className="h-3.5 w-3.5 text-status-good" />
-                          ) : (
-                            <TrendingDown className="h-3.5 w-3.5 text-status-poor" />
-                          )}
-                          <span className="font-medium">{restaurant.revenue}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column - Drive View */}
-          <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold">Performance Metrics</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Your key drive indicators
-                </p>
-              </div>
-            </div>
             <div className="space-y-4">
-              {driveMetrics.map((metric, index) => (
-                <Card
-                  key={metric.id}
-                  className="p-5 hover:shadow-md transition-all duration-300 animate-scale-in"
-                  style={{ animationDelay: `${300 + index * 100}ms` }}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-sm font-medium text-muted-foreground">
-                            {metric.label}
-                          </span>
-                          <Badge 
-                            variant={metric.isPositive ? "default" : "destructive"}
-                            className="text-xs"
-                          >
-                            {metric.change}
-                          </Badge>
-                        </div>
-                        <div className="text-3xl font-bold text-primary">
-                          {metric.value}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {metric.subtitle}
-                        </p>
-                      </div>
-                      {metric.isPositive ? (
-                        <TrendingUp className="h-5 w-5 text-status-good" />
-                      ) : (
-                        <TrendingDown className="h-5 w-5 text-status-poor" />
-                      )}
-                    </div>
-                  </div>
+              {filteredRestaurants.length === 0 ? (
+                <Card className="p-12 text-center">
+                  <p className="text-muted-foreground text-lg">
+                    {searchQuery ? "No restaurants match your search" : "No restaurants assigned"}
+                  </p>
                 </Card>
-              ))}
-              
-              <Card
-                className="p-5 bg-primary text-primary-foreground hover:shadow-primary transition-all duration-300 cursor-pointer group mt-6"
-                onClick={() => navigate("/kam-analytics")}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold mb-1">View Full Analytics</p>
-                    <p className="text-xs opacity-90">Detailed insights & trends</p>
-                  </div>
-                  <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Card>
+              ) : (
+                filteredRestaurants.map((restaurant, index) => {
+                  const status = getRestaurantStatus(restaurant);
+                  const driveCount = restaurant.drive_data?.length || 0;
+                  const revenue = restaurant.sept_ov
+                    ? `₹${(restaurant.sept_ov / 1000).toFixed(0)}K`
+                    : "N/A";
+
+                  return (
+                    <Card
+                      key={restaurant.res_id}
+                      className="group p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-l-4 border-l-transparent hover:border-l-primary animate-slide-up"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                      onClick={() => navigate(`/restaurant/${restaurant.res_id}`)}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-lg font-semibold">{restaurant.res_name}</span>
+                            <StatusPill status={status} />
+                            {driveCount > 1 && (
+                              <Badge variant="secondary" className="text-xs">
+                                {driveCount} drives
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                            {restaurant.locality && (
+                              <div className="flex items-center gap-1">
+                                <Store className="h-3.5 w-3.5" />
+                                <span>{restaurant.locality}</span>
+                              </div>
+                            )}
+                            {restaurant.cuisine && (
+                              <div className="flex items-center gap-1">
+                                <span>•</span>
+                                <span>{restaurant.cuisine}</span>
+                              </div>
+                            )}
+                            <div className="flex items-center gap-1">
+                              <span className="font-medium">{revenue}</span>
+                              <span className="text-xs">Sept OV</span>
+                            </div>
+                          </div>
+                        </div>
+                        <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                      </div>
+                    </Card>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

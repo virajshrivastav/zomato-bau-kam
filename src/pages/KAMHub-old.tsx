@@ -6,10 +6,12 @@ const KAMHub = () => {
           <h2 className="text-xl font-bold text-primary">Zomato Drive - KAM Hub</h2>
         </div>
       </nav>
-      
+
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-foreground mb-4">KAM Hub</h1>
-        <p className="text-muted-foreground">Welcome to the Key Account Manager Hub. This page will be built in the next iteration.</p>
+        <p className="text-muted-foreground">
+          Welcome to the Key Account Manager Hub. This page will be built in the next iteration.
+        </p>
       </main>
     </div>
   );

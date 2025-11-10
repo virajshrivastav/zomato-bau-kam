@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { 
-  ChevronRight, 
-  Phone, 
-  Mail, 
+import {
+  ChevronRight,
+  Phone,
+  Mail,
   ExternalLink,
   Share2,
-  MoreVertical
+  MoreVertical,
+  ArrowLeft,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface RestaurantHeaderProps {
   restaurant: {
@@ -26,16 +28,21 @@ interface RestaurantHeaderProps {
 }
 
 export const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-card border-b">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
-        {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <span className="hover:text-foreground cursor-pointer transition-colors">Dashboard</span>
-          <ChevronRight className="w-4 h-4" />
-          <span className="hover:text-foreground cursor-pointer transition-colors">Restaurants</span>
-          <ChevronRight className="w-4 h-4" />
-          <span className="text-foreground font-medium">{restaurant.name}</span>
+        {/* Back Button & Breadcrumbs */}
+        <div className="flex items-center gap-3 mb-4">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/kam-hub")} className="gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to KAM Hub
+          </Button>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <ChevronRight className="w-4 h-4" />
+            <span className="text-foreground font-medium">{restaurant.name}</span>
+          </div>
         </div>
 
         {/* Header Content */}
@@ -83,7 +90,11 @@ export const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
                   <Share2 className="w-4 h-4 mr-2" />
                   Share Restaurant
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(`https://zomato.com/restaurant/${restaurant.id}`, '_blank')}>
+                <DropdownMenuItem
+                  onClick={() =>
+                    window.open(`https://zomato.com/restaurant/${restaurant.id}`, "_blank")
+                  }
+                >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View on Zomato
                 </DropdownMenuItem>

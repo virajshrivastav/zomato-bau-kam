@@ -31,7 +31,10 @@ const PodiumDisplay = ({ first, second, third }: PodiumProps) => {
         {/* First Place */}
         <Card className="flex-1 p-8 bg-gradient-to-b from-gold/20 to-transparent border-gold/40 transform scale-110 hover:scale-115 transition-transform shadow-2xl">
           <div className="text-center">
-            <Trophy className="w-16 h-16 text-gold mx-auto mb-4 animate-bounce" fill="currentColor" />
+            <Trophy
+              className="w-16 h-16 text-gold mx-auto mb-4 animate-bounce"
+              fill="currentColor"
+            />
             <div className="text-7xl font-bold text-gold mb-2">1</div>
             <div className="text-2xl font-bold text-foreground mb-1">{first.name}</div>
             <div className="text-sm text-muted-foreground mb-3">{first.zone}</div>
@@ -55,4 +58,3 @@ const PodiumDisplay = ({ first, second, third }: PodiumProps) => {
 };
 
 export default PodiumDisplay;
-

@@ -4,9 +4,16 @@ import { Input } from "@/components/ui/input";
 interface SearchBarProps {
   placeholder?: string;
   className?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const SearchBar = ({ placeholder = "Search restaurants...", className }: SearchBarProps) => {
+export const SearchBar = ({
+  placeholder = "Search restaurants...",
+  className,
+  value,
+  onChange,
+}: SearchBarProps) => {
   return (
     <div className="relative w-full max-w-md">
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -14,6 +21,8 @@ export const SearchBar = ({ placeholder = "Search restaurants...", className }: 
         type="text"
         placeholder={placeholder}
         className={`pl-10 ${className}`}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );

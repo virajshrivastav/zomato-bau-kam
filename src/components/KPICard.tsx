@@ -19,7 +19,7 @@ export const KPICard = ({
   changeType = "neutral",
   icon: Icon,
   iconColor = "text-primary",
-  description
+  description,
 }: KPICardProps) => {
   return (
     <Card className="card-hover overflow-hidden relative hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
@@ -33,7 +33,8 @@ export const KPICard = ({
             <span
               className={cn(
                 "text-xs font-medium px-2 py-1 rounded-full",
-                changeType === "positive" && "bg-[hsl(var(--status-done))]/10 text-[hsl(var(--status-done))]",
+                changeType === "positive" &&
+                  "bg-[hsl(var(--status-done))]/10 text-[hsl(var(--status-done))]",
                 changeType === "negative" && "bg-destructive/10 text-destructive",
                 changeType === "neutral" && "bg-muted text-muted-foreground"
               )}
@@ -45,9 +46,7 @@ export const KPICard = ({
         <div>
           <p className="text-2xl font-bold mb-1">{value}</p>
           <p className="text-sm text-muted-foreground">{title}</p>
-          {description && (
-            <p className="text-xs text-muted-foreground mt-1">{description}</p>
-          )}
+          {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
         </div>
       </CardContent>
     </Card>

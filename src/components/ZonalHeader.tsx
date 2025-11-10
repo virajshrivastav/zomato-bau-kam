@@ -14,9 +14,7 @@ const ZonalHeader = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">
-                Zomato Drive
-              </h1>
+              <h1 className="text-xl md:text-2xl font-bold text-foreground">Zomato Drive</h1>
               <p className="text-sm text-muted-foreground hidden md:block">
                 Zonal Performance Dashboard
               </p>

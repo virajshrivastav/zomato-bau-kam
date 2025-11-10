@@ -12,13 +12,7 @@ interface LeaderboardBarProps {
   totalRanks: number;
 }
 
-const LeaderboardBar = ({
-  name,
-  zone,
-  achievement,
-  rank,
-  totalRanks,
-}: LeaderboardBarProps) => {
+const LeaderboardBar = ({ name, zone, achievement, rank, totalRanks }: LeaderboardBarProps) => {
   const getBarColor = () => {
     switch (rank) {
       case 1:
@@ -60,7 +54,7 @@ const LeaderboardBar = ({
   };
 
   return (
-    <div 
+    <div
       className="flex flex-col items-center group"
       style={{
         animation: `fadeIn 0.5s ease-out ${rank * 0.1}s both`,
@@ -81,9 +75,7 @@ const LeaderboardBar = ({
       </div>
 
       {/* Achievement percentage above bar */}
-      <div className="mb-1 font-bold text-foreground text-lg">
-        {achievement}%
-      </div>
+      <div className="mb-1 font-bold text-foreground text-lg">{achievement}%</div>
 
       {/* Vertical Bar */}
       <div className="relative w-20 h-64 bg-muted/50 rounded-t-xl overflow-hidden border-2 border-border shadow-inner">
@@ -108,12 +100,8 @@ const LeaderboardBar = ({
 
       {/* Name and Zone */}
       <div className="mt-3 text-center">
-        <div className="font-semibold text-foreground text-sm">
-          {name}
-        </div>
-        <div className="text-xs text-muted-foreground">
-          {zone}
-        </div>
+        <div className="font-semibold text-foreground text-sm">{name}</div>
+        <div className="text-xs text-muted-foreground">{zone}</div>
       </div>
 
       {/* Rank badge */}
@@ -122,10 +110,10 @@ const LeaderboardBar = ({
           rank === 1
             ? "bg-gold/20 text-gold"
             : rank === 2
-            ? "bg-silver/20 text-gray-700"
-            : rank === 3
-            ? "bg-bronze/20 text-orange-700"
-            : "bg-muted text-muted-foreground"
+              ? "bg-silver/20 text-gray-700"
+              : rank === 3
+                ? "bg-bronze/20 text-orange-700"
+                : "bg-muted text-muted-foreground"
         }`}
       >
         #{rank}
@@ -135,4 +123,3 @@ const LeaderboardBar = ({
 };
 
 export default LeaderboardBar;
-

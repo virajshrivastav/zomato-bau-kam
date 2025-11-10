@@ -65,25 +65,19 @@ const LiveSprints = () => {
 
       <div className="container mx-auto px-6 py-12">
         {/* Podium Display */}
-        <PodiumDisplay
-          first={topThree[0]}
-          second={topThree[1]}
-          third={topThree[2]}
-        />
+        <PodiumDisplay first={topThree[0]} second={topThree[1]} third={topThree[2]} />
 
         {/* Main Chart Section */}
         <Card className="p-8 shadow-2xl bg-card/80 backdrop-blur">
           <div className="flex items-center gap-2 mb-8">
             <Sparkles className="w-6 h-6 text-primary" />
-            <h2 className="text-3xl font-bold text-foreground">
-              Achievement Leaderboard
-            </h2>
+            <h2 className="text-3xl font-bold text-foreground">Achievement Leaderboard</h2>
           </div>
 
           {/* Vertical Bar Chart with Y-Axis on Left */}
           <div className="relative flex gap-6">
             {/* Y-Axis (Left side) */}
-            <div className="flex flex-col justify-between py-8" style={{ height: '400px' }}>
+            <div className="flex flex-col justify-between py-8" style={{ height: "400px" }}>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-muted-foreground">100%</span>
                 <div className="w-2 h-px bg-border" />
@@ -104,7 +98,13 @@ const LiveSprints = () => {
                 <span className="text-xs font-medium text-muted-foreground">0%</span>
                 <div className="w-2 h-px bg-border" />
               </div>
-              <div className="absolute left-0 -rotate-90 origin-left text-sm font-semibold text-muted-foreground whitespace-nowrap" style={{ top: '50%', transform: 'translateX(-80px) translateY(-50%) rotate(-90deg)' }}>
+              <div
+                className="absolute left-0 -rotate-90 origin-left text-sm font-semibold text-muted-foreground whitespace-nowrap"
+                style={{
+                  top: "50%",
+                  transform: "translateX(-80px) translateY(-50%) rotate(-90deg)",
+                }}
+              >
                 Achievement %
               </div>
             </div>
@@ -184,4 +184,3 @@ const LiveSprints = () => {
 };
 
 export default LiveSprints;
-

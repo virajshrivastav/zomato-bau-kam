@@ -22,9 +22,7 @@ export const PromosCard = ({ title, promos, showActivateButton }: PromosCardProp
 
   const handlePromoToggle = (promoId: string) => {
     setSelectedPromos((prev) =>
-      prev.includes(promoId)
-        ? prev.filter((id) => id !== promoId)
-        : [...prev, promoId]
+      prev.includes(promoId) ? prev.filter((id) => id !== promoId) : [...prev, promoId]
     );
   };
 
@@ -60,10 +58,7 @@ export const PromosCard = ({ title, promos, showActivateButton }: PromosCardProp
                   checked={selectedPromos.includes(promo.id)}
                   onCheckedChange={() => handlePromoToggle(promo.id)}
                 />
-                <label
-                  htmlFor={promo.id}
-                  className="flex-1 cursor-pointer"
-                >
+                <label htmlFor={promo.id} className="flex-1 cursor-pointer">
                   <p className="font-medium text-sm">{promo.name}</p>
                   <p className="text-xs text-muted-foreground">{promo.discount}</p>
                 </label>

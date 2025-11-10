@@ -8,9 +8,9 @@ interface ActiveDrivesCardProps {
 
 export const ActiveDrivesCard = ({ drives }: ActiveDrivesCardProps) => {
   const driveDescriptions = {
-    "N2R": "New to Restaurant - Onboarding new customers",
-    "NCN": "New Customer Nurture - Engaging first-time users",
-    "MRP": "Most Relevant Product - Personalized recommendations"
+    N2R: "New to Restaurant - Onboarding new customers",
+    NCN: "New Customer Nurture - Engaging first-time users",
+    MRP: "Most Relevant Product - Personalized recommendations",
   };
 
   return (
@@ -27,7 +27,10 @@ export const ActiveDrivesCard = ({ drives }: ActiveDrivesCardProps) => {
         ) : (
           <div className="space-y-3">
             {drives.map((drive, index) => (
-              <div key={index} className="p-3 rounded-lg border border-[hsl(var(--status-info))]/20 bg-[hsl(var(--status-info))]/5 hover:bg-[hsl(var(--status-info))]/10 transition-colors">
+              <div
+                key={index}
+                className="p-3 rounded-lg border border-[hsl(var(--status-info))]/20 bg-[hsl(var(--status-info))]/5 hover:bg-[hsl(var(--status-info))]/10 transition-colors"
+              >
                 <div className="flex items-center justify-between mb-1">
                   <StatusBadge variant="info">{drive}</StatusBadge>
                   <Zap className="w-4 h-4 text-[hsl(var(--status-info))]" />

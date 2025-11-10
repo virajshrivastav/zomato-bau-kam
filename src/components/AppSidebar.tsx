@@ -1,6 +1,17 @@
-import { LayoutDashboard, Building2, BarChart3, Settings, Users, TrendingUp, Home } from "lucide-react";
+import {
+  LayoutDashboard,
+  Building2,
+  BarChart3,
+  Settings,
+  Users,
+  TrendingUp,
+  Home,
+  LogOut,
+} from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 import {
   Sidebar,
@@ -32,9 +43,16 @@ const bottomItems = [
 export function AppSidebar() {
   const { open: collapsed } = useSidebar();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut, user } = useAuth();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => currentPath === path;
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -100,12 +118,22 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-4">
-        {collapsed && (
-          <div className="text-xs text-muted-foreground">
-            <p className="font-medium">KAM Portal</p>
-            <p>v2.1.0</p>
-          </div>
-        )}
+        <div className="space-y-2">
+          {collapsed && user && (
+            <div className="text-xs text-muted-foreground mb-2">
+              <p className="font-medium truncate">{user.email}</p>
+            </div>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            className="w-full justify-start"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            {collapsed && <span>Logout</span>}
+          </Button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

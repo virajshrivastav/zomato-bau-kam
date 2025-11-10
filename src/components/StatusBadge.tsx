@@ -13,9 +13,5 @@ export const StatusBadge = ({ variant, children, className }: StatusBadgeProps) 
     pending: "bg-[hsl(var(--status-pending))] text-white",
   };
 
-  return (
-    <span className={cn("status-badge", variants[variant], className)}>
-      {children}
-    </span>
-  );
+  return <span className={cn("status-badge", variants[variant], className)}>{children}</span>;
 };

@@ -35,12 +35,17 @@ export const RestaurantOverviewCard = ({ restaurantData }: RestaurantOverviewCar
           {details.map((detail, index) => {
             const Icon = detail.icon;
             return (
-              <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-all duration-200 border border-transparent hover:border-border">
+              <div
+                key={index}
+                className="flex items-start gap-3 p-3 rounded-lg hover:bg-accent/50 transition-all duration-200 border border-transparent hover:border-border"
+              >
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Icon className="w-4 h-4 text-primary flex-shrink-0" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">{detail.label}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+                    {detail.label}
+                  </p>
                   <p className="font-semibold text-foreground truncate">{detail.value}</p>
                 </div>
               </div>

@@ -3,11 +3,25 @@ import KPICard from "@/components/KPICard";
 import KAMPerformanceTable from "@/components/KAMPerformanceTable";
 import { Users, TrendingUp, Target, Activity } from "lucide-react";
 
+/**
+ * Zonal Head View Page
+ *
+ * NOTE: This page currently uses MOCK DATA intentionally.
+ *
+ * Reason: Real team performance data is still evolving. Once data stabilizes,
+ * this can be connected to real metrics in 1-2 hours by:
+ * 1. Creating database functions for team metrics (KAM performance, rankings, etc.)
+ * 2. Creating useZonalStats() hook to fetch real data
+ * 3. Replacing the mock KPI values and KAMPerformanceTable data with real data
+ *
+ * For now, this serves as a UI preview for stakeholders.
+ */
+
 const ZonalHeadView = () => {
   return (
     <div className="min-h-screen bg-background">
       <ZonalHeader />
-      
+
       <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8 animate-fade-in">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
@@ -54,9 +68,7 @@ const ZonalHeadView = () => {
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-foreground mb-4">
-            KAM Performance Rankings
-          </h3>
+          <h3 className="text-xl font-semibold text-foreground mb-4">KAM Performance Rankings</h3>
           <KAMPerformanceTable />
         </div>
       </main>

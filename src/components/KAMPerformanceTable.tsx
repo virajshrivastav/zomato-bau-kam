@@ -24,12 +24,48 @@ interface KAMPerformance {
   rank: number;
 }
 
+// MOCK DATA - This will be replaced with real data from useZonalStats() hook when data stabilizes
 const kamData: KAMPerformance[] = [
-  { name: "Amdeep", drivePerformance: "9/10", conversionAvg: "80%", approachRate: "85%", totalDrives: 45, rank: 1 },
-  { name: "Khushi", drivePerformance: "9/10", conversionAvg: "81%", approachRate: "87%", totalDrives: 42, rank: 2 },
-  { name: "Shrawani", drivePerformance: "8/10", conversionAvg: "76%", approachRate: "80%", totalDrives: 38, rank: 3 },
-  { name: "Shiv", drivePerformance: "8/10", conversionAvg: "75%", approachRate: "82%", totalDrives: 40, rank: 4 },
-  { name: "Rutuja", drivePerformance: "7/10", conversionAvg: "72%", approachRate: "78%", totalDrives: 35, rank: 5 },
+  {
+    name: "Amdeep",
+    drivePerformance: "9/10",
+    conversionAvg: "80%",
+    approachRate: "85%",
+    totalDrives: 45,
+    rank: 1,
+  },
+  {
+    name: "Khushi",
+    drivePerformance: "9/10",
+    conversionAvg: "81%",
+    approachRate: "87%",
+    totalDrives: 42,
+    rank: 2,
+  },
+  {
+    name: "Shrawani",
+    drivePerformance: "8/10",
+    conversionAvg: "76%",
+    approachRate: "80%",
+    totalDrives: 38,
+    rank: 3,
+  },
+  {
+    name: "Shiv",
+    drivePerformance: "8/10",
+    conversionAvg: "75%",
+    approachRate: "82%",
+    totalDrives: 40,
+    rank: 4,
+  },
+  {
+    name: "Rutuja",
+    drivePerformance: "7/10",
+    conversionAvg: "72%",
+    approachRate: "78%",
+    totalDrives: 35,
+    rank: 5,
+  },
 ];
 
 const KAMPerformanceTable = () => {
@@ -52,20 +88,18 @@ const KAMPerformanceTable = () => {
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortField) return 0;
-    
+
     const aValue = a[sortField];
     const bValue = b[sortField];
-    
+
     if (typeof aValue === "string" && typeof bValue === "string") {
-      return sortDirection === "asc" 
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
+      return sortDirection === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
     }
-    
+
     if (typeof aValue === "number" && typeof bValue === "number") {
       return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
     }
-    
+
     return 0;
   });
 
@@ -80,21 +114,25 @@ const KAMPerformanceTable = () => {
 
   const handleExport = () => {
     // Simple CSV export
-    const headers = ["Rank", "KAM Name", "Drive Performance", "Conversion Avg.", "Approach Rate", "Total Drives"];
-    const rows = sortedData.map(kam => [
+    const headers = [
+      "Rank",
+      "KAM Name",
+      "Drive Performance",
+      "Conversion Avg.",
+      "Approach Rate",
+      "Total Drives",
+    ];
+    const rows = sortedData.map((kam) => [
       kam.rank,
       kam.name,
       kam.drivePerformance,
       kam.conversionAvg,
       kam.approachRate,
-      kam.totalDrives
+      kam.totalDrives,
     ]);
-    
-    const csvContent = [
-      headers.join(","),
-      ...rows.map(row => row.join(","))
-    ].join("\n");
-    
+
+    const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
+
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -126,10 +164,8 @@ const KAMPerformanceTable = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-table-header hover:bg-table-header">
-                <TableHead className="font-semibold text-foreground w-16">
-                  Rank
-                </TableHead>
-                <TableHead 
+                <TableHead className="font-semibold text-foreground w-16">Rank</TableHead>
+                <TableHead
                   className="font-semibold text-foreground cursor-pointer hover:text-primary"
                   onClick={() => handleSort("name")}
                 >
@@ -138,7 +174,7 @@ const KAMPerformanceTable = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </div>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="font-semibold text-foreground cursor-pointer hover:text-primary"
                   onClick={() => handleSort("drivePerformance")}
                 >
@@ -147,7 +183,7 @@ const KAMPerformanceTable = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </div>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="font-semibold text-foreground cursor-pointer hover:text-primary"
                   onClick={() => handleSort("conversionAvg")}
                 >
@@ -156,7 +192,7 @@ const KAMPerformanceTable = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </div>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="font-semibold text-foreground cursor-pointer hover:text-primary"
                   onClick={() => handleSort("approachRate")}
                 >
@@ -165,7 +201,7 @@ const KAMPerformanceTable = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </div>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="font-semibold text-foreground cursor-pointer hover:text-primary"
                   onClick={() => handleSort("totalDrives")}
                 >
@@ -174,9 +210,7 @@ const KAMPerformanceTable = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </div>
                 </TableHead>
-                <TableHead className="font-semibold text-foreground">
-                  Status
-                </TableHead>
+                <TableHead className="font-semibold text-foreground">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -188,8 +222,8 @@ const KAMPerformanceTable = () => {
                 </TableRow>
               ) : (
                 sortedData.map((kam, index) => (
-                  <TableRow 
-                    key={kam.name} 
+                  <TableRow
+                    key={kam.name}
                     className={cn(
                       "hover:bg-muted/50 transition-colors",
                       index % 2 === 0 ? "bg-background" : "bg-muted/20"
@@ -198,7 +232,7 @@ const KAMPerformanceTable = () => {
                     <TableCell className="font-medium">
                       <div className="flex items-center justify-center">
                         {kam.rank <= 3 ? (
-                          <Badge 
+                          <Badge
                             className={cn(
                               "w-8 h-8 rounded-full flex items-center justify-center",
                               kam.rank === 1 && "bg-yellow-500 hover:bg-yellow-500 text-white",
@@ -213,14 +247,12 @@ const KAMPerformanceTable = () => {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="font-semibold text-foreground">
-                      {kam.name}
-                    </TableCell>
+                    <TableCell className="font-semibold text-foreground">{kam.name}</TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         <span className="font-medium">{kam.drivePerformance}</span>
                         <div className="w-full bg-muted rounded-full h-2">
-                          <div 
+                          <div
                             className="bg-primary h-2 rounded-full transition-all"
                             style={{ width: `${parsePerformance(kam.drivePerformance) * 100}%` }}
                           />
@@ -239,9 +271,9 @@ const KAMPerformanceTable = () => {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <PerformanceBadge 
-                        value={parsePercentage(kam.conversionAvg)} 
-                        type="percentage" 
+                      <PerformanceBadge
+                        value={parsePercentage(kam.conversionAvg)}
+                        type="percentage"
                       />
                     </TableCell>
                   </TableRow>

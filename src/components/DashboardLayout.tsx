@@ -15,9 +15,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <header className="sticky top-0 z-10 h-14 border-b bg-card/80 backdrop-blur-sm flex items-center px-4 gap-2">
             <SidebarTrigger />
           </header>
-          <main className="flex-1 overflow-auto">
-            {children}
-          </main>
+          <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>
     </SidebarProvider>

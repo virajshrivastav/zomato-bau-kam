@@ -10,10 +10,12 @@ interface DashboardCardProps {
 
 export const DashboardCard = ({ title, children, className, footer }: DashboardCardProps) => {
   return (
-    <Card className={cn(
-      "shadow-md hover:shadow-xl transition-all duration-300 border-border/50 bg-gradient-to-br from-card to-card/95 hover:-translate-y-1 animate-fade-in backdrop-blur-sm",
-      className
-    )}>
+    <Card
+      className={cn(
+        "shadow-md hover:shadow-xl transition-all duration-300 border-border/50 bg-gradient-to-br from-card to-card/95 hover:-translate-y-1 animate-fade-in backdrop-blur-sm",
+        className
+      )}
+    >
       <CardHeader className="pb-4 border-b border-border/50">
         <CardTitle className="text-lg font-bold text-foreground tracking-tight">{title}</CardTitle>
       </CardHeader>
