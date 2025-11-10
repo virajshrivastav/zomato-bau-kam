@@ -23,3 +23,26 @@ dist-ssr
 *.sln
 *.sw?
 
+# Documentation files (exclude all except README.md)
+*.md
+!README.md
+
+# Archive and context directories
+archive/
+context-for-new-setup/
+sprint-hub-manager-temp/
+
+# Old component versions
+src/pages/*-old.tsx
+src/pages/*-kam-central.tsx
+
+# Lovable repo submodules
+drive-focus-view/
+drive-focus-view-new/
+drive-kam-central/
+drivehub-zonal/
+kam-action-center/
+zomato-drive-dash/
+
+# Sample data
+sample-data.csv
