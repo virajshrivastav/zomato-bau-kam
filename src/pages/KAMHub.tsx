@@ -195,7 +195,9 @@ const KAMHub = () => {
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h3 className="text-xl font-bold text-foreground">Performance Metrics</h3>
-                      <p className="text-sm text-muted-foreground mt-1">Your key drive indicators</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Your key drive indicators
+                      </p>
                     </div>
                     <Button
                       onClick={() => navigate("/kam-analytics")}

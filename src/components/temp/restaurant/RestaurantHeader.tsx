@@ -49,14 +49,19 @@ export const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
           </Button>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-3">
-              <h1 className="text-3xl font-bold text-foreground tracking-tight">{restaurant.name}</h1>
+              <h1 className="text-3xl font-bold text-foreground tracking-tight">
+                {restaurant.name}
+              </h1>
             </div>
             <div className="flex items-center gap-3 flex-wrap text-sm">
               <span className="font-semibold text-foreground bg-muted px-3 py-1 rounded-md">
                 {restaurant.id}
               </span>
               <span className="text-muted-foreground">•</span>
-              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 font-medium">
+              <Badge
+                variant="outline"
+                className="bg-primary/10 text-primary border-primary/20 font-medium"
+              >
                 {restaurant.cuisine}
               </Badge>
               <span className="text-muted-foreground">•</span>

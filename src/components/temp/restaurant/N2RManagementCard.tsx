@@ -26,7 +26,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
         <div className="grid grid-cols-3 gap-2">
           {/* LA */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/20 dark:to-green-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-green-700 dark:text-green-400 mb-2">LA</div>
+            <div className="text-center text-xs font-bold text-green-700 dark:text-green-400 mb-2">
+              LA
+            </div>
             <div className="text-xs text-muted-foreground mb-2">
               AOV:{" "}
               <span className="font-semibold text-foreground">₹{data.currentCodes.la.aov}</span>
@@ -38,7 +40,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
 
           {/* MM */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-blue-700 dark:text-blue-400 mb-2">MM</div>
+            <div className="text-center text-xs font-bold text-blue-700 dark:text-blue-400 mb-2">
+              MM
+            </div>
             <div className="text-xs text-muted-foreground mb-2">
               AOV:{" "}
               <span className="font-semibold text-foreground">₹{data.currentCodes.mm.aov}</span>
@@ -50,7 +54,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
 
           {/* UM */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-purple-700 dark:text-purple-400 mb-2">UM</div>
+            <div className="text-center text-xs font-bold text-purple-700 dark:text-purple-400 mb-2">
+              UM
+            </div>
             <div className="text-xs text-muted-foreground mb-2">
               AOV:{" "}
               <span className="font-semibold text-foreground">₹{data.currentCodes.um.aov}</span>
@@ -68,7 +74,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
         <div className="grid grid-cols-3 gap-2">
           {/* LA */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/20 dark:to-amber-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">LA</div>
+            <div className="text-center text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">
+              LA
+            </div>
             <div className="text-[10px] space-y-1">
               <div>
                 <span className="text-muted-foreground">Construct:</span>
@@ -85,7 +93,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
 
           {/* MM */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-teal-50 to-teal-100/50 dark:from-teal-950/20 dark:to-teal-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-teal-700 dark:text-teal-400 mb-2">MM</div>
+            <div className="text-center text-xs font-bold text-teal-700 dark:text-teal-400 mb-2">
+              MM
+            </div>
             <div className="text-[10px] space-y-1">
               <div>
                 <span className="text-muted-foreground">Construct:</span>
@@ -102,7 +112,9 @@ export const N2RManagementCard = ({ data: initialData }: N2RManagementCardProps)
 
           {/* UM */}
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-rose-50 to-rose-100/50 dark:from-rose-950/20 dark:to-rose-900/10 hover:shadow-sm transition-all">
-            <div className="text-center text-xs font-bold text-rose-700 dark:text-rose-400 mb-2">UM</div>
+            <div className="text-center text-xs font-bold text-rose-700 dark:text-rose-400 mb-2">
+              UM
+            </div>
             <div className="text-[10px] space-y-1">
               <div>
                 <span className="text-muted-foreground">Construct:</span>

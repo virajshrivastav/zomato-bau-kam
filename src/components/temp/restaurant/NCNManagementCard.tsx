@@ -78,7 +78,9 @@ export const NCNManagementCard = ({ data: initialData }: NCNManagementCardProps)
             </Button>
           </div>
           <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10 text-center hover:shadow-sm transition-all">
-            <p className="text-xs font-semibold mb-2 text-purple-700 dark:text-purple-400">Flash Sale</p>
+            <p className="text-xs font-semibold mb-2 text-purple-700 dark:text-purple-400">
+              Flash Sale
+            </p>
             <Button
               type="button"
               variant="link"

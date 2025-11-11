@@ -90,7 +90,9 @@ export const CommentsSection = ({ comments: initialComments }: CommentsSectionPr
                       {formatTimestamp(comment.timestamp)}
                     </span>
                   </div>
-                  <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">{comment.text}</p>
+                  <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+                    {comment.text}
+                  </p>
                 </div>
               </div>
             </div>

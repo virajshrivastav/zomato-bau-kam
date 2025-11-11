@@ -46,11 +46,15 @@ export const ItemsManagementCard = ({ data: initialData }: ItemsManagementCardPr
           <div className="text-sm font-bold text-foreground">{data.priority}</div>
         </div>
         <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-950/20 dark:to-indigo-900/10 text-center hover:shadow-sm transition-all">
-          <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1 font-medium">POS Flag</div>
+          <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1 font-medium">
+            POS Flag
+          </div>
           <div className="text-sm font-bold text-foreground">{data.posFlag}</div>
         </div>
         <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/20 dark:to-emerald-900/10 text-center hover:shadow-sm transition-all">
-          <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1 font-medium">PG 7-10</div>
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1 font-medium">
+            PG 7-10
+          </div>
           <div className="text-sm font-bold text-foreground">{data.pg7to10}</div>
         </div>
       </div>
