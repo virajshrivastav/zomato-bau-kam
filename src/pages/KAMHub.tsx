@@ -109,81 +109,169 @@ const KAMHub = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Restaurant View */}
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground">Restaurant Portfolio</h2>
-                <p className="text-base text-muted-foreground mt-2">
-                  {filteredRestaurants.length} restaurant
-                  {filteredRestaurants.length !== 1 ? "s" : ""}{" "}
-                  {searchQuery && `(filtered from ${restaurants?.length})`}
-                </p>
-              </div>
-              <Badge variant="outline" className="gap-2 px-4 py-2 text-sm">
-                <Store className="h-4 w-4" />
-                {filteredRestaurants.length} Total
-              </Badge>
-            </div>
-            <div className="space-y-4">
-              {filteredRestaurants.length === 0 ? (
-                <Card className="p-12 text-center">
-                  <p className="text-muted-foreground text-lg">
-                    {searchQuery ? "No restaurants match your search" : "No restaurants assigned"}
+        <div className="max-w-7xl mx-auto">
+          {/* Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
+            {/* Left Column - Restaurants */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-3xl font-bold text-foreground">Restaurants</h2>
+                  <p className="text-base text-muted-foreground mt-2">
+                    {filteredRestaurants.length} restaurant
+                    {filteredRestaurants.length !== 1 ? "s" : ""} under management
                   </p>
-                </Card>
-              ) : (
-                filteredRestaurants.map((restaurant, index) => {
-                  const status = getRestaurantStatus(restaurant);
-                  const driveCount = restaurant.drive_data?.length || 0;
-                  const revenue = restaurant.sept_ov
-                    ? `₹${(restaurant.sept_ov / 1000).toFixed(0)}K`
-                    : "N/A";
+                </div>
+                <Badge variant="outline" className="gap-2 px-4 py-2 text-sm">
+                  <Store className="h-4 w-4" />
+                  {filteredRestaurants.length} Total
+                </Badge>
+              </div>
+              <div className="space-y-4">
+                {filteredRestaurants.length === 0 ? (
+                  <Card className="p-12 text-center">
+                    <p className="text-muted-foreground text-lg">
+                      {searchQuery ? "No restaurants match your search" : "No restaurants assigned"}
+                    </p>
+                  </Card>
+                ) : (
+                  filteredRestaurants.map((restaurant, index) => {
+                    const status = getRestaurantStatus(restaurant);
+                    const driveCount = restaurant.drive_data?.length || 0;
+                    const revenue = restaurant.sept_ov
+                      ? `₹${(restaurant.sept_ov / 1000).toFixed(0)}K`
+                      : "N/A";
 
-                  return (
-                    <Card
-                      key={restaurant.res_id}
-                      className="group p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-l-4 border-l-transparent hover:border-l-primary animate-slide-up"
-                      style={{ animationDelay: `${index * 50}ms` }}
-                      onClick={() => navigate(`/restaurant/${restaurant.res_id}`)}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-lg font-semibold">{restaurant.res_name}</span>
-                            <StatusPill status={status} />
-                            {driveCount > 1 && (
-                              <Badge variant="secondary" className="text-xs">
-                                {driveCount} drives
-                              </Badge>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                            {restaurant.locality && (
+                    return (
+                      <Card
+                        key={restaurant.res_id}
+                        className="group p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-l-4 border-l-transparent hover:border-l-primary animate-slide-up"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                        onClick={() => navigate(`/restaurant/${restaurant.res_id}`)}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center gap-3 flex-wrap">
+                              <span className="text-lg font-semibold">{restaurant.res_name}</span>
+                              <StatusPill status={status} />
+                              {driveCount > 1 && (
+                                <Badge variant="secondary" className="text-xs">
+                                  {driveCount} drives
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                              {restaurant.locality && (
+                                <div className="flex items-center gap-1">
+                                  <Store className="h-3.5 w-3.5" />
+                                  <span>{restaurant.locality}</span>
+                                </div>
+                              )}
+                              {restaurant.cuisine && (
+                                <div className="flex items-center gap-1">
+                                  <span>•</span>
+                                  <span>{restaurant.cuisine}</span>
+                                </div>
+                              )}
                               <div className="flex items-center gap-1">
-                                <Store className="h-3.5 w-3.5" />
-                                <span>{restaurant.locality}</span>
+                                <span className="font-medium">{revenue}</span>
+                                <span className="text-xs">Sept OV</span>
                               </div>
-                            )}
-                            {restaurant.cuisine && (
-                              <div className="flex items-center gap-1">
-                                <span>•</span>
-                                <span>{restaurant.cuisine}</span>
-                              </div>
-                            )}
-                            <div className="flex items-center gap-1">
-                              <span className="font-medium">{revenue}</span>
-                              <span className="text-xs">Sept OV</span>
                             </div>
                           </div>
+                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                         </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                      </Card>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+
+            {/* Right Column - Performance Metrics */}
+            <div className="lg:col-span-1">
+              <Card className="sticky top-24">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground">Performance Metrics</h3>
+                      <p className="text-sm text-muted-foreground mt-1">Your key drive indicators</p>
+                    </div>
+                    <Button
+                      onClick={() => navigate("/kam-analytics")}
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs text-primary hover:text-primary"
+                    >
+                      View Full Analytics
+                    </Button>
+                  </div>
+
+                  {/* NCN Metric */}
+                  <div className="mb-6 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">NCN</span>
+                        <StatusPill autoVariant value={85} className="text-xs h-5 px-2">
+                          +3.2%
+                        </StatusPill>
                       </div>
-                    </Card>
-                  );
-                })
-              )}
+                      <div className="flex items-center gap-1">
+                        <span className="text-2xl font-bold text-foreground">25%</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">New Customers to New</p>
+                  </div>
+
+                  {/* N2R Metric */}
+                  <div className="mb-6 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">N2R</span>
+                        <StatusPill autoVariant value={18} className="text-xs h-5 px-2">
+                          -1.8%
+                        </StatusPill>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-2xl font-bold text-foreground">18%</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">New to Regular</p>
+                  </div>
+
+                  {/* MRP Metric */}
+                  <div className="mb-6 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">MRP</span>
+                        <StatusPill autoVariant value={21} className="text-xs h-5 px-2">
+                          -2.1%
+                        </StatusPill>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-2xl font-bold text-foreground">₹45K</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Monthly Revenue per Rest.</p>
+                  </div>
+
+                  {/* Active Drives Metric */}
+                  <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">Active</span>
+                        <StatusPill type="danger" className="text-xs h-5 px-2">
+                          +12
+                        </StatusPill>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-2xl font-bold text-foreground">127</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Total Active Drives</p>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>

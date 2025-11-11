@@ -87,6 +87,9 @@ const MainDashboard = () => {
                 { name: "Mumbai", score: 80 },
                 { name: "Hyderabad", score: 75 },
                 { name: "Bangalore", score: 25 },
+                { name: "Delhi", score: 85 },
+                { name: "Kolkata", score: 70 },
+                { name: "Chennai", score: 65 },
               ].map((city) => (
                 <div key={city.name} className="flex items-center justify-between">
                   <span className="text-sm">{city.name}</span>
@@ -112,6 +115,8 @@ const MainDashboard = () => {
                 { name: "East", score: 70 },
                 { name: "North-West", score: 25 },
                 { name: "South", score: 60 },
+                { name: "Central", score: 80 },
+                { name: "PCMC", score: 75 },
               ].map((zone) => (
                 <div key={zone.name} className="flex items-center justify-between">
                   <span className="text-sm">{zone.name}</span>
@@ -135,6 +140,9 @@ const MainDashboard = () => {
                 { name: "Amdeep", score: 70 },
                 { name: "Shrawani", score: 70 },
                 { name: "Rutuja", score: 20 },
+                { name: "Viraj", score: 85 },
+                { name: "Rohit", score: 65 },
+                { name: "Jaswant", score: 75 },
               ].map((kam) => (
                 <div key={kam.name} className="flex items-center justify-between">
                   <span className="text-sm">{kam.name}</span>
@@ -155,40 +163,14 @@ const MainDashboard = () => {
           </Card>
         </div>
 
-        {/* Restaurant Portfolio Section - Full Width CTA */}
-        <Card
-          className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 hover:shadow-lg transition-all cursor-pointer group mb-6"
-          onClick={() => navigate("/kam-hub")}
-        >
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center">
-                  <Store className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground mb-1">Restaurant Portfolio</h3>
-                  <p className="text-sm text-muted-foreground">
-                    View and manage all restaurants with search and filtering
-                  </p>
-                </div>
-              </div>
-              <Button size="lg" className="gap-2 group-hover:gap-3 transition-all">
-                View Portfolio
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Bottom Grid - Optimized Layout with Performance Metrics */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Past Drives - Compact */}
-          <Card className="lg:col-span-2">
+        {/* Bottom Grid - Aligned with Top Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          {/* Past Drives */}
+          <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Past Drives</CardTitle>
+              <CardTitle className="text-base">Past Drives</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pb-3">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-medium">Ads Drive</h4>
@@ -201,12 +183,12 @@ const MainDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Upcoming Drives - Compact */}
-          <Card className="lg:col-span-2">
+          {/* Upcoming Drives */}
+          <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Upcoming Drives</CardTitle>
+              <CardTitle className="text-base">Upcoming Drives</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pb-3">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-medium">Image Drive</h4>
@@ -218,129 +200,33 @@ const MainDashboard = () => {
               </div>
             </CardContent>
           </Card>
-
-          {/* Performance Metrics - Extended */}
-          <Card className="lg:col-span-8">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-sm">Performance Metrics</CardTitle>
-                  <CardDescription className="text-xs">
-                    Detailed analytics and insights
-                  </CardDescription>
-                </div>
-                <Button
-                  onClick={() => navigate("/kam-analytics")}
-                  variant="outline"
-                  size="sm"
-                  className="h-8 text-xs"
-                >
-                  View Full Analytics
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* Metric Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Owner Live Drives</p>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span>NCN</span>
-                      <StatusPill autoVariant value={85} className="text-xs h-5">
-                        85%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>MRP</span>
-                      <StatusPill autoVariant value={72} className="text-xs h-5">
-                        72%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>N2R</span>
-                      <StatusPill autoVariant value={58} className="text-xs h-5">
-                        58%
-                      </StatusPill>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">City Wise</p>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Pune</span>
-                      <StatusPill autoVariant value={90} className="text-xs h-5">
-                        90%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Mumbai</span>
-                      <StatusPill autoVariant value={80} className="text-xs h-5">
-                        80%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Hyderabad</span>
-                      <StatusPill autoVariant value={75} className="text-xs h-5">
-                        75%
-                      </StatusPill>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Zone Wise</p>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span>East</span>
-                      <StatusPill autoVariant value={70} className="text-xs h-5">
-                        70%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>North-West</span>
-                      <StatusPill autoVariant value={25} className="text-xs h-5">
-                        25%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>South</span>
-                      <StatusPill autoVariant value={60} className="text-xs h-5">
-                        60%
-                      </StatusPill>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">KAM Performance</p>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Shiv</span>
-                      <StatusPill autoVariant value={50} className="text-xs h-5">
-                        50%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Amdeep</span>
-                      <StatusPill autoVariant value={70} className="text-xs h-5">
-                        70%
-                      </StatusPill>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span>Shrawani</span>
-                      <StatusPill autoVariant value={70} className="text-xs h-5">
-                        70%
-                      </StatusPill>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
+
+        {/* My Portfolio Section - Full Width CTA */}
+        <Card
+          className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 hover:shadow-lg transition-all cursor-pointer group"
+          onClick={() => navigate("/kam-hub")}
+        >
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center">
+                  <Store className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground mb-1">My Portfolio</h3>
+                  <p className="text-sm text-muted-foreground">
+                    View and manage all restaurants with search and filtering
+                  </p>
+                </div>
+              </div>
+              <Button size="lg" className="gap-2 group-hover:gap-3 transition-all">
+                View Portfolio
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

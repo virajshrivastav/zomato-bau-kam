@@ -35,10 +35,10 @@ const ZonalHeadView = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <KPICard
             title="Total KAMs"
-            value="5"
+            value="8"
             icon={Users}
             description="Active account managers"
-            change="+2"
+            change="+3"
             changeType="positive"
           />
           <KPICard

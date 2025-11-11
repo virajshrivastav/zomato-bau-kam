@@ -1,3 +1,11 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+dist-ssr
+*.local
+
 # Logs
 logs
 *.log
@@ -7,10 +15,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment variables (NEVER commit these)
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
 
 # Editor directories and files
 .vscode/*
@@ -23,26 +33,37 @@ dist-ssr
 *.sln
 *.sw?
 
-# Documentation files (exclude all except README.md)
-*.md
-!README.md
-
-# Archive and context directories
-archive/
+# Documentation files (exclude from repo)
+docs/
 context-for-new-setup/
-sprint-hub-manager-temp/
+FIX-VERCEL-DEPLOYMENT.md
+TROUBLESHOOT-LOCALHOST-ERROR.md
+USER-ACCOUNTS-SETUP.md
+VERCEL-DEPLOYMENT-GUIDE.md
+
+# Temporary UI experiments (exclude)
+temp-ui1/
+temp-ui2/
+
+# SQL setup files (separate database repo)
+*.sql
+
+# Text configuration files (exclude)
+OAUTH-SUPABASE-CONFIG.txt
+VERCEL-ENV-VARIABLES.txt
+
+# Excel and data files
+*.xlsx
+*.xls
+*.csv
+sample-data.csv
+
+# Images (exclude random images)
+pic.jpg
+
+# Deployment configs
+.vercel/
 
 # Old component versions
-src/pages/*-old.tsx
-src/pages/*-kam-central.tsx
-
-# Lovable repo submodules
-drive-focus-view/
-drive-focus-view-new/
-drive-kam-central/
-drivehub-zonal/
-kam-action-center/
-zomato-drive-dash/
-
-# Sample data
-sample-data.csv
+*-old.tsx
+*-old.ts

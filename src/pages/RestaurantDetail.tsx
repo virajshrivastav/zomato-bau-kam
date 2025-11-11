@@ -1,83 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { RestaurantOverviewCard } from "@/components/RestaurantOverviewCard";
-import { PromosCard } from "@/components/PromosCard";
-import { TasksCard } from "@/components/TasksCard";
-import { NotesCard } from "@/components/NotesCard";
-import { RestaurantHeader } from "@/components/RestaurantHeader";
-import { KPICard } from "@/components/KPICard";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRestaurant, useMarkApproached, useMarkConverted } from "@/hooks/useRestaurants";
+import { useRestaurant } from "@/hooks/useRestaurants";
+import { RestaurantHeader } from "@/components/temp/restaurant/RestaurantHeader";
+import { MetricsRow } from "@/components/temp/restaurant/MetricsRow";
+import { NCNManagementCard } from "@/components/temp/restaurant/NCNManagementCard";
+import { N2RManagementCard } from "@/components/temp/restaurant/N2RManagementCard";
+import { ItemsManagementCard } from "@/components/temp/restaurant/ItemsManagementCard";
+import { CommentsSection } from "@/components/temp/restaurant/CommentsSection";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import {
-  TrendingUp,
-  Target,
-  Users,
-  DollarSign,
-  ArrowLeft,
-  Loader2,
-  CheckCircle2,
-  Circle,
-  Zap,
-} from "lucide-react";
+  RestaurantTempData,
+  RestaurantMetrics,
+  NCNData,
+  N2RData,
+  ItemsData,
+  Comment,
+} from "@/types/restaurantTemp";
 
 const RestaurantDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { toast } = useToast();
 
   const { data: restaurant, isLoading, error } = useRestaurant(id || "");
-  const markApproached = useMarkApproached();
-  const markConverted = useMarkConverted();
-
-  const handleMarkApproached = async (driveId: number, driveName: string) => {
-    if (!user?.email || !id) return;
-
-    try {
-      await markApproached.mutateAsync({
-        resId: id,
-        driveId,
-        kamEmail: user.email,
-      });
-
-      toast({
-        title: "Success",
-        description: `Marked as approached for ${driveName}`,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to mark as approached",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleMarkConverted = async (driveId: number, driveName: string) => {
-    if (!user?.email || !id) return;
-
-    try {
-      await markConverted.mutateAsync({
-        resId: id,
-        driveId,
-        kamEmail: user.email,
-      });
-
-      toast({
-        title: "Success",
-        description: `Marked as converted for ${driveName}`,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to mark as converted",
-        variant: "destructive",
-      });
-    }
-  };
 
   if (isLoading) {
     return (
@@ -109,180 +55,195 @@ const RestaurantDetail = () => {
     );
   }
 
-  // Transform data for existing components
-  const restaurantData = {
+  // Transform API data to match new UI component interfaces
+  const restaurantData: RestaurantTempData = {
     id: restaurant.res_id,
     name: restaurant.res_name,
-    adsBudget: "N/A",
     location: restaurant.locality || "N/A",
-    phone: "N/A",
-    email: "N/A",
-    drives: restaurant.drive_data?.map((dd) => dd.drives?.drive_name || "Unknown") || [],
-    activePromos: [],
-    suggestedPromos: [],
-    tasks: [],
+    cuisine: restaurant.cuisine || "N/A",
+    phone: undefined, // TODO: Add phone field to database
+    email: undefined, // TODO: Add email field to database
+    toingFlag: "Not Live", // TODO: Add TOING flag to database
   };
 
-  // Calculate KPIs
-  const activeDrives = restaurant.drive_data?.length || 0;
-  const approachedCount = restaurant.drive_data?.filter((dd) => dd.approached).length || 0;
-  const convertedCount = restaurant.drive_data?.filter((dd) => dd.converted_stepper).length || 0;
-  const conversionRate = activeDrives > 0 ? Math.round((convertedCount / activeDrives) * 100) : 0;
+  const metricsData: RestaurantMetrics = {
+    activeDrives: restaurant.drive_data?.length || 0,
+    zvdPo: "N/A", // TODO: Add ZVD.PO calculation
+    adsBudget: {
+      total: 50000, // TODO: Add ADS budget to database
+      utilized: 32000, // TODO: Add ADS utilized to database
+      percentage: 64, // TODO: Calculate from total and utilized
+    },
+    toingFlag: "Not Live", // TODO: Add TOING flag to database
+  };
+
+  // NCN Data - Transform from drive_data
+  const ncnDriveData = restaurant.drive_data?.find(
+    (dd) =>
+      dd.drives?.drive_name.toLowerCase().includes("ncn") ||
+      dd.drives?.drive_name.toLowerCase().includes("no cooking november")
+  );
+
+  const ncnData: NCNData = {
+    priorities: [
+      "Stepper Codes",
+      "Base Codes",
+      "BOGO Offers",
+      "Flash Sales",
+      "Salt Discount",
+      "Customer Retention",
+    ], // TODO: Add priorities to database
+    activePromosLink: ncnDriveData?.la_active_promos || "#",
+    suggestedPromos: {
+      bogo: {
+        items: ["Burger + Fries", "Pizza + Coke", "Combo Meal"], // TODO: Add to database
+      },
+      flashSale: {
+        items: ["Lunch Special", "Dinner Deal", "Weekend Offer"], // TODO: Add to database
+      },
+      salt: {
+        percentage: 15, // TODO: Add to database
+      },
+    },
+    stepperAndBaseCodes: {
+      la: [
+        {
+          id: "la-1",
+          flatOff: ncnDriveData?.la || 50,
+          mov: 199,
+          status: ncnDriveData?.la_step1 ? "Picked" : "Pending",
+          selected: false,
+        },
+        {
+          id: "la-2",
+          flatOff: ncnDriveData?.la || 75,
+          mov: 299,
+          status: ncnDriveData?.la_step2 ? "Picked" : "Pending",
+          selected: false,
+        },
+      ],
+      mm: [
+        {
+          id: "mm-1",
+          flatOff: ncnDriveData?.mm || 60,
+          mov: 249,
+          status: "Pending",
+          selected: false,
+        },
+      ],
+      um: [
+        {
+          id: "um-1",
+          flatOff: ncnDriveData?.um || 70,
+          mov: 349,
+          status: "Pending",
+          selected: false,
+        },
+      ],
+    },
+    approached: ncnDriveData?.approached ? "yes" : "no",
+    converted: ncnDriveData?.converted_stepper ? "yes" : "no",
+  };
+
+  // N2R Data - Transform from drive_data
+  const n2rDriveData = restaurant.drive_data?.find(
+    (dd) =>
+      dd.drives?.drive_name.toLowerCase().includes("n2r") ||
+      dd.drives?.drive_name.toLowerCase().includes("new to restaurant")
+  );
+
+  const n2rData: N2RData = {
+    currentCodes: {
+      la: {
+        aov: n2rDriveData?.la || 250,
+        currentCode: n2rDriveData?.la_active_promos || "N/A",
+      },
+      mm: {
+        aov: n2rDriveData?.mm || 350,
+        currentCode: n2rDriveData?.mm_active_promos || "N/A",
+      },
+      um: {
+        aov: n2rDriveData?.um || 450,
+        currentCode: n2rDriveData?.um_active_promos || "N/A",
+      },
+    },
+    suggestedCodes: {
+      la: {
+        construct: n2rDriveData?.la_base_code_suggested || "50% upto 100",
+        mov: "199rs",
+      },
+      mm: {
+        construct: n2rDriveData?.mm_base_code_suggested || "60% upto 120",
+        mov: "249rs",
+      },
+      um: {
+        construct: n2rDriveData?.um_base_code_suggested || "70% upto 150",
+        mov: "349rs",
+      },
+    },
+    reqCoupons: {
+      la: 1000, // TODO: Add to database
+      mm: 800, // TODO: Add to database
+      um: 600, // TODO: Add to database
+    },
+    approached: n2rDriveData?.approached ? "yes" : "no",
+    converted: n2rDriveData?.converted_stepper ? "yes" : "no",
+  };
+
+  // Items Data
+  const itemsData: ItemsData = {
+    priority: "P0", // TODO: Add to database
+    posFlag: "Pet Pooja", // TODO: Add to database
+    pg7to10: "23%", // TODO: Add to database
+    dishSuggestions: [
+      "Paneer Tikka",
+      "Chicken Biryani",
+      "Veg Fried Rice",
+      "Butter Naan",
+      "Dal Makhani",
+      "Gulab Jamun",
+    ], // TODO: Add to database
+    approached: "no",
+    converted: "no",
+    itemsAdded: [
+      { id: "1", value: "", checked: false },
+      { id: "2", value: "", checked: false },
+      { id: "3", value: "", checked: false },
+      { id: "4", value: "", checked: false },
+      { id: "5", value: "", checked: false },
+    ],
+  };
+
+  // Comments Data - TODO: Fetch from database
+  const commentsData: Comment[] = [
+    {
+      id: "1",
+      author: user?.email || "KAM",
+      text: "Initial contact made with restaurant owner.",
+      timestamp: new Date(Date.now() - 86400000).toISOString(),
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="animate-fade-in">
-        {/* Professional Header with Breadcrumbs */}
-        <RestaurantHeader restaurant={restaurantData} />
-
-        <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-          {/* KPI Metrics Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <KPICard
-              title="Active Drives"
-              value={activeDrives}
-              change={`${approachedCount} approached`}
-              changeType="positive"
-              icon={TrendingUp}
-            />
-            <KPICard
-              title="Conversion Rate"
-              value={`${conversionRate}%`}
-              change={`${convertedCount}/${activeDrives} converted`}
-              changeType={conversionRate >= 50 ? "positive" : "neutral"}
-              icon={Target}
-            />
-            <KPICard
-              title="Sept Revenue"
-              value={restaurant.sept_ov ? `₹${(restaurant.sept_ov / 1000).toFixed(0)}K` : "N/A"}
-              change={restaurant.cuisine || "N/A"}
-              changeType="neutral"
-              icon={DollarSign}
-            />
-            <KPICard
-              title="Priority Score"
-              value={restaurant.drive_data?.[0]?.priority_score || 0}
-              change="Avg across drives"
-              changeType="neutral"
-              icon={Users}
-            />
-          </div>
-
-          {/* Overview Section - 2 Column Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <RestaurantOverviewCard restaurantData={restaurantData} />
-
-            {/* Drive Tracking Card */}
-            <Card className="card-hover border-primary/20">
-              <CardHeader className="border-b bg-gradient-to-br from-[hsl(var(--status-info))]/5 to-transparent">
-                <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-[hsl(var(--status-info))]" />
-                  Active Drives & Tracking
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                {!restaurant.drive_data || restaurant.drive_data.length === 0 ? (
-                  <p className="text-muted-foreground text-sm">No active drives</p>
-                ) : (
-                  <div className="space-y-4">
-                    {restaurant.drive_data.map((driveData) => {
-                      const drive = driveData.drives;
-                      if (!drive) return null;
-
-                      return (
-                        <div
-                          key={driveData.id}
-                          className="p-4 rounded-lg border border-border bg-card hover:shadow-md transition-all"
-                        >
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <Badge variant="outline" className="font-semibold">
-                                  {drive.drive_name}
-                                </Badge>
-                                {driveData.converted_stepper && (
-                                  <Badge className="bg-status-good text-white">Converted</Badge>
-                                )}
-                                {driveData.approached && !driveData.converted_stepper && (
-                                  <Badge variant="secondary">Approached</Badge>
-                                )}
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                {drive.drive_type || "Marketing Drive"} • Priority:{" "}
-                                {driveData.priority_score}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              variant={driveData.approached ? "outline" : "default"}
-                              onClick={() => handleMarkApproached(drive.id, drive.drive_name)}
-                              disabled={driveData.approached || markApproached.isPending}
-                              className="flex-1"
-                            >
-                              {driveData.approached ? (
-                                <>
-                                  <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                                  Approached
-                                </>
-                              ) : (
-                                <>
-                                  <Circle className="w-3.5 h-3.5 mr-1" />
-                                  Mark Approached
-                                </>
-                              )}
-                            </Button>
-
-                            <Button
-                              size="sm"
-                              variant={driveData.converted_stepper ? "outline" : "default"}
-                              onClick={() => handleMarkConverted(drive.id, drive.drive_name)}
-                              disabled={driveData.converted_stepper || markConverted.isPending}
-                              className="flex-1"
-                            >
-                              {driveData.converted_stepper ? (
-                                <>
-                                  <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                                  Converted
-                                </>
-                              ) : (
-                                <>
-                                  <Circle className="w-3.5 h-3.5 mr-1" />
-                                  Mark Converted
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Action Section - 3 Column Grid */}
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Column 1 - Promos */}
-            <div className="space-y-6">
-              <PromosCard title="Active Promos" promos={restaurantData.activePromos} />
-              <PromosCard
-                title="Suggested Promos"
-                promos={restaurantData.suggestedPromos}
-                showActivateButton
-              />
-            </div>
-
-            {/* Column 2 - Tasks */}
-            <TasksCard tasks={restaurantData.tasks} />
-
-            {/* Column 3 - Notes */}
-            <NotesCard restaurantId={restaurant.res_id} />
-          </div>
+    <div className="min-h-screen bg-background pb-8">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 space-y-6 animate-fade-in">
+        {/* Header */}
+        <div className="pt-6">
+          <RestaurantHeader restaurant={restaurantData} />
         </div>
+
+        {/* Metrics Row */}
+        <MetricsRow metrics={metricsData} />
+
+        {/* Three-Column Layout - Drive Modules */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <NCNManagementCard data={ncnData} />
+          <N2RManagementCard data={n2rData} />
+          <ItemsManagementCard data={itemsData} />
+        </div>
+
+        {/* Comments Section */}
+        <CommentsSection comments={commentsData} />
       </div>
     </div>
   );

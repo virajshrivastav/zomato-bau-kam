@@ -1,0 +1,131 @@
+import { ManagementCard } from "@/components/temp/ui/ManagementCard";
+import { ItemsData } from "@/types/restaurantTemp";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ToggleButtonGroup } from "@/components/temp/ui/ToggleButtonGroup";
+import { useState } from "react";
+
+interface ItemsManagementCardProps {
+  data: ItemsData;
+}
+
+export const ItemsManagementCard = ({ data: initialData }: ItemsManagementCardProps) => {
+  const [data, setData] = useState(initialData);
+
+  const handleApproachedChange = (value: string) => {
+    setData({ ...data, approached: value as "yes" | "no" });
+  };
+
+  const handleConvertedChange = (value: string) => {
+    setData({ ...data, converted: value as "yes" | "wip" | "no" });
+  };
+
+  const handleItemAddedChange = (id: string, value: string) => {
+    setData({
+      ...data,
+      itemsAdded: data.itemsAdded.map((item) => (item.id === id ? { ...item, value } : item)),
+    });
+  };
+
+  const handleItemCheckedChange = (id: string) => {
+    setData({
+      ...data,
+      itemsAdded: data.itemsAdded.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      ),
+    });
+  };
+
+  return (
+    <ManagementCard title="Items <= 159" subtitle="Add Items under 159rs">
+      {/* 3 Info Boxes */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/20 dark:to-red-900/10 text-center hover:shadow-sm transition-all">
+          <div className="text-xs text-red-600 dark:text-red-400 mb-1 font-medium">Priority</div>
+          <div className="text-sm font-bold text-foreground">{data.priority}</div>
+        </div>
+        <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-950/20 dark:to-indigo-900/10 text-center hover:shadow-sm transition-all">
+          <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1 font-medium">POS Flag</div>
+          <div className="text-sm font-bold text-foreground">{data.posFlag}</div>
+        </div>
+        <div className="p-3 border border-border rounded-lg bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/20 dark:to-emerald-900/10 text-center hover:shadow-sm transition-all">
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1 font-medium">PG 7-10</div>
+          <div className="text-sm font-bold text-foreground">{data.pg7to10}</div>
+        </div>
+      </div>
+
+      {/* Dish Suggestions */}
+      <div className="space-y-3">
+        <h4 className="text-sm font-semibold text-foreground">Dish Suggestions</h4>
+        <div className="grid grid-cols-2 gap-2">
+          {data.dishSuggestions.map((dish, index) => (
+            <div
+              key={index}
+              className="p-3 border border-border rounded-lg bg-gradient-to-br from-muted/50 to-muted/30 text-center hover:shadow-sm hover:border-primary/30 transition-all"
+            >
+              <span className="text-xs font-medium text-foreground">
+                {index + 1}. {dish}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Approached & Converted */}
+      <div className="space-y-3">
+        <ToggleButtonGroup
+          label="Approached"
+          value={data.approached}
+          onChange={handleApproachedChange}
+          options={["yes", "no"]}
+        />
+        <ToggleButtonGroup
+          label="Converted"
+          value={data.converted}
+          onChange={handleConvertedChange}
+          options={["yes", "wip", "no"]}
+        />
+      </div>
+
+      {/* Items Added */}
+      <div>
+        <h4 className="text-sm font-semibold mb-2">Items Added</h4>
+        <div className="space-y-2">
+          {data.itemsAdded.map((item, index) => (
+            <div key={item.id} className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{index + 1}.</span>
+              <Input
+                type="text"
+                value={item.value}
+                onChange={(e) => handleItemAddedChange(item.id, e.target.value)}
+                placeholder="Enter item name"
+                className="flex-1 h-8 text-sm"
+                autoComplete="off"
+              />
+              <Checkbox
+                id={`item-${item.id}`}
+                checked={item.checked}
+                onCheckedChange={() => handleItemCheckedChange(item.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <Button
+        type="button"
+        className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg transition-all"
+        onClick={() => {
+          const addedItems = data.itemsAdded.filter((item) => item.checked && item.value);
+          alert(
+            `Submitting ${addedItems.length} items:\n${addedItems.map((i) => i.value).join("\n")}`
+          );
+        }}
+      >
+        Submit Items
+      </Button>
+    </ManagementCard>
+  );
+};

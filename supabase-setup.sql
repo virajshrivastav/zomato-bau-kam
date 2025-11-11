@@ -97,7 +97,7 @@ INSERT INTO restaurants (res_id, res_name, kam_name, kam_email, tl_email, cuisin
   ('R006', 'Tandoor Express', 'Shrawani Patil', 'shrawani.patil@zomato.com', 'manager2@zomato.com', 'Punjabi', 'Wakad', 'Wakad - Punjabi', 'Standard', 42000),
   ('R007', 'South Flavors', 'Rutuja Deshmukh', 'rutuja.deshmukh@zomato.com', 'manager2@zomato.com', 'South Indian', 'Kothrud', 'Kothrud - South Indian', 'Premium', 68000),
   ('R008', 'Biryani House', 'Rutuja Deshmukh', 'rutuja.deshmukh@zomato.com', 'manager2@zomato.com', 'Biryani', 'Shivaji Nagar', 'Shivaji Nagar - Biryani', 'Premium', 72000),
-  ('R009', 'Cafe Delight', 'Shiv Kumar', 'shiv.kumar@zomato.com', 'manager1@zomato.com', 'Cafe', 'Koregaon Park', 'Koregaon Park - Cafe', 'Standard', 28000),
+  ('239546', 'Cafe Delight', 'Shiv Kumar', 'shiv.kumar@zomato.com', 'manager1@zomato.com', 'North Indian', 'Koregaon Park', 'Koregaon Park - North Indian', 'Standard', 28000),
   ('R010', 'Pizza Corner', 'Amdeep Singh', 'amdeep.singh@zomato.com', 'manager1@zomato.com', 'Italian', 'Viman Nagar', 'Viman Nagar - Italian', 'Standard', 35000);
 
 -- Insert 3 sample drives
@@ -124,7 +124,9 @@ INSERT INTO drive_data (res_id, drive_id, um, mm, la, la_base_code_suggested, ap
   ('R006', 2, 1, 0, 1, NULL, false, false, 55),
   ('R007', 3, 1, 1, 1, NULL, true, true, 92),
   ('R008', 3, 1, 1, 1, NULL, true, true, 88),
-  ('R009', 1, 1, 0, 0, 'LA_BASE_005', false, false, 45),
+  ('239546', 1, 1, 1, 1, 'LA_BASE_005', false, false, 45),
+  ('239546', 2, 1, 1, 0, NULL, false, false, 50),
+  ('239546', 3, 1, 0, 1, NULL, false, false, 48),
   ('R010', 1, 1, 1, 0, 'LA_BASE_006', true, false, 60);
 
 -- ============================================

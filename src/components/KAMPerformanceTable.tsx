@@ -27,12 +27,20 @@ interface KAMPerformance {
 // MOCK DATA - This will be replaced with real data from useZonalStats() hook when data stabilizes
 const kamData: KAMPerformance[] = [
   {
+    name: "Viraj",
+    drivePerformance: "9/10",
+    conversionAvg: "85%",
+    approachRate: "88%",
+    totalDrives: 48,
+    rank: 1,
+  },
+  {
     name: "Amdeep",
     drivePerformance: "9/10",
     conversionAvg: "80%",
     approachRate: "85%",
     totalDrives: 45,
-    rank: 1,
+    rank: 2,
   },
   {
     name: "Khushi",
@@ -40,7 +48,7 @@ const kamData: KAMPerformance[] = [
     conversionAvg: "81%",
     approachRate: "87%",
     totalDrives: 42,
-    rank: 2,
+    rank: 3,
   },
   {
     name: "Shrawani",
@@ -48,7 +56,15 @@ const kamData: KAMPerformance[] = [
     conversionAvg: "76%",
     approachRate: "80%",
     totalDrives: 38,
-    rank: 3,
+    rank: 4,
+  },
+  {
+    name: "Jaswant",
+    drivePerformance: "8/10",
+    conversionAvg: "75%",
+    approachRate: "82%",
+    totalDrives: 40,
+    rank: 5,
   },
   {
     name: "Shiv",
@@ -56,7 +72,7 @@ const kamData: KAMPerformance[] = [
     conversionAvg: "75%",
     approachRate: "82%",
     totalDrives: 40,
-    rank: 4,
+    rank: 6,
   },
   {
     name: "Rutuja",
@@ -64,7 +80,15 @@ const kamData: KAMPerformance[] = [
     conversionAvg: "72%",
     approachRate: "78%",
     totalDrives: 35,
-    rank: 5,
+    rank: 7,
+  },
+  {
+    name: "Rohit",
+    drivePerformance: "7/10",
+    conversionAvg: "65%",
+    approachRate: "75%",
+    totalDrives: 32,
+    rank: 8,
   },
 ];
 
